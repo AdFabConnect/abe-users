@@ -1,0 +1,12 @@
+.panel-login {
+  width: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0px;
+}
+
+.login-footer .pull-right {
+  margin-top: 5px;
+}
