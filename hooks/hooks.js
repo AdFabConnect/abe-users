@@ -175,7 +175,7 @@ var hooks = {
       res.send = function (string) {
         var body = string instanceof Buffer ? string.toString() : string;
         body = body.replace(/<\/body>/, function (w) {
-           return '<input type="hidden" id="globalCsrfToken" value="' + token + '" /><script src="/user-input.js"></script>' + w;
+           return '<input type=\'hidden\' id=\'globalCsrfToken\' value=\'' + token + '\' /><script src=\'/user-input.js\'></script>' + w;
         });
         send.call(this, body);
       };
