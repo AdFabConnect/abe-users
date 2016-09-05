@@ -147,7 +147,7 @@ It will redirect you to ```http://localhost:8000/plugin/abe-users/login```
 Default login information are :
 
 - login : **admin**
-- password : **Admin@test**
+- password : **Adm1n@test**
 
 
 ### Create user
