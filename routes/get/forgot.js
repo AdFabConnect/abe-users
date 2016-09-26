@@ -7,6 +7,7 @@ var config = require('../../modules/config')
   , jwt = require('jwt-simple')
   , crypto = require('crypto')
   , nodemailer = require('nodemailer');
+var path = require('path');
 
 var route = function route(req, res, next, abe) {
 
@@ -33,7 +34,7 @@ var route = function route(req, res, next, abe) {
         var html = emailConf.html || ''
 
         if(typeof emailConf.templateHtml !== 'undefined' && emailConf.templateHtml !== null) {
-          var fileHtml = abe.fileUtils.concatPath(abe.config.root, emailConf.templateHtml)
+          var fileHtml = path.join(abe.config.root, emailConf.templateHtml)
           if (abe.fileUtils.isFile(fileHtml)) {
             var html = fs.readFileSync(fileHtml, 'utf8')
           }
@@ -61,7 +62,7 @@ var route = function route(req, res, next, abe) {
               html: html.replace(/\{\{forgotUrl\}\}/g, requestedUrl) // html body
           }, console.error);
 
-          var reset = abe.fileUtils.concatPath(__dirname + '/../../partials/forgot.html')
+          var reset = path.join(__dirname + '/../../partials/forgot.html')
           var html = abe.fileUtils.getFileContent(reset);
 
           var template = abe.Handlebars.compile(html, {noEscape: true})
@@ -97,7 +98,7 @@ var route = function route(req, res, next, abe) {
                   return console.log(error);
               }
 
-              var reset = abe.fileUtils.concatPath(__dirname + '/../../partials/forgot.html')
+              var reset = path.join(__dirname + '/../../partials/forgot.html')
               var html = abe.fileUtils.getFileContent(reset);
 
               var template = abe.Handlebars.compile(html, {noEscape: true})
@@ -120,7 +121,7 @@ var route = function route(req, res, next, abe) {
       });
     });
   }else {
-    var reset = abe.fileUtils.concatPath(__dirname + '/../../partials/forgot.html')
+    var reset = path.join(__dirname + '/../../partials/forgot.html')
     var html = abe.fileUtils.getFileContent(reset);
 
     var template = abe.Handlebars.compile(html, {noEscape: true})

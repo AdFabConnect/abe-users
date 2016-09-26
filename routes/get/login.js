@@ -2,11 +2,12 @@
 
 var config = require('../../modules/config')
   , flash = require('connect-flash');
+var path = require('path');
 
 var route = function route(req, res, next, abe) {
   var htmlToSend = '';
 
-  var login = abe.fileUtils.concatPath(__dirname + '/../../partials/login.html')
+  var login = path.join(__dirname + '/../../partials/login.html')
   var html = abe.fileUtils.getFileContent(login);
 
   var template = abe.Handlebars.compile(html, {noEscape: true})

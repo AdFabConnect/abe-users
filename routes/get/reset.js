@@ -6,11 +6,12 @@ var config = require('../../modules/config')
   , Cookies = require('cookies')
   , jwt = require('jwt-simple')
   , crypto = require('crypto');
+var path = require('path');
 
 var route = function route(req, res, next, abe) {
   if(typeof req.query.token !== 'undefined' && req.query.token !== null) {
     User.findByResetPasswordToken(req.query.token, function (err, user) {
-      var reset = abe.fileUtils.concatPath(__dirname + '/../../partials/reset.html')
+      var reset = path.join(__dirname + '/../../partials/reset.html')
       var html = abe.fileUtils.getFileContent(reset);
 
       var template = abe.Handlebars.compile(html, {noEscape: true})

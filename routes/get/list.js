@@ -5,6 +5,7 @@ var config = require('../../modules/config')
   , fs = require('fs')
   , Cookies = require('cookies')
   , jwt = require('jwt-simple');
+var path = require('path');
 
 var route = function route(req, res, next, abe) {
   abe.Hooks.instance.trigger('beforeRoute', req, res, next);
@@ -12,7 +13,7 @@ var route = function route(req, res, next, abe) {
 
   var htmlToSend = '';
 
-  var login = abe.fileUtils.concatPath(__dirname + '/../../partials/users-list.html')
+  var login = path.join(__dirname + '/../../partials/users-list.html')
   var html = abe.fileUtils.getFileContent(login);
 
   var template = abe.Handlebars.compile(html, {noEscape: true})

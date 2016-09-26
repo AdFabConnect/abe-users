@@ -6,13 +6,14 @@ var config = require('../../modules/config')
   , Cookies = require('cookies')
   , jwt = require('jwt-simple')
   , crypto = require('crypto');
+var path = require('path');
 
 var route = function route(req, res, next, abe) {
   if(typeof req.body.token !== 'undefined' && req.body.token !== null
     && typeof req.body.password !== 'undefined' && req.body.password !== null
     && typeof req.body['repeat-password'] !== 'undefined' && req.body['repeat-password'] !== null) {
     if (req.body.password !== req.body['repeat-password']) {
-      var reset = abe.fileUtils.concatPath(__dirname + '/../../partials/reset.html')
+      var reset = path.join(__dirname + '/../../partials/reset.html')
       var html = abe.fileUtils.getFileContent(reset);
 
       var template = abe.Handlebars.compile(html, {noEscape: true})
@@ -45,7 +46,7 @@ var route = function route(req, res, next, abe) {
         }
       }
       if (msg !== '') {
-        var reset = abe.fileUtils.concatPath(__dirname + '/../../partials/reset.html')
+        var reset = path.join(__dirname + '/../../partials/reset.html')
         var html = abe.fileUtils.getFileContent(reset);
 
         var template = abe.Handlebars.compile(html, {noEscape: true})
@@ -70,7 +71,7 @@ var route = function route(req, res, next, abe) {
         var login = config.getConfig('login', abe);
         res.redirect(login)
       }else {
-        var reset = abe.fileUtils.concatPath(__dirname + '/../../partials/reset.html')
+        var reset = path.join(__dirname + '/../../partials/reset.html')
         var html = abe.fileUtils.getFileContent(reset);
 
         var template = abe.Handlebars.compile(html, {noEscape: true})

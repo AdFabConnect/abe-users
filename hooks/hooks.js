@@ -99,48 +99,30 @@ var hooks = {
     return url;
   },
   afterListPageDraft: function(workflow, file, index, text, abe) {
-    var newRes = ''
+    var newRes = '';
 
-    if(typeof file.draft !== 'undefined' && file.draft !== null
-      && typeof file.draft.abe_meta !== 'undefined' && file.draft.abe_meta !== null
-      && typeof file.draft.abe_meta.status !== 'undefined' && file.draft.abe_meta.status !== null) {
-      var status = file.draft.abe_meta.status
-      var workflowUser = JSON.parse(JSON.stringify(config.getConfig('workflow', abe)));
-      var lastWorkflow = workflowUser.pop()
-      Array.prototype.forEach.call(workflowUser, (flow) => {
-        var hidden = ''
-        newRes += `<td align="center" class="${flow}">`
-        if(status !== flow) {
-          hidden = 'hidden'
-        }
-        newRes += `<a href="/abe/${file.template}?filePath=${file.draft.cleanFilePath}" class="${hidden} label label-default label-draft">
-            ${flow}
-            </a>
-          </td>`
-      })
-      newRes += `<td align="center">`
-      if (file.published){
-        newRes += `<a href="/abe/${file.template}?filePath=${file.published.filePath}" class="checkmark label-published">&#10004;</a>`
+    var status = file.abe_meta.status;
+    var workflowUser = JSON.parse(JSON.stringify(config.getConfig('workflow', abe)));
+    Array.prototype.forEach.call(workflowUser, (flow) => {
+      var hidden = ''
+      if(status !== flow) {
+        hidden = 'hidden'
       }
-      newRes += `</td>`
-    }else {
-      var workflowUser = JSON.parse(JSON.stringify(config.getConfig('workflow', abe)))
-      var lastWorkflow = workflowUser.pop()
-      Array.prototype.forEach.call(workflowUser, function(flow) {
-        newRes += `<td align="center">
-          <a href="/abe/${file.template}?filePath=${file.path}" class="hidden label label-default label-draft">
-            ${flow}
-            </a>
-          </td>`
-      })
-      newRes += `<td align="center">
-        <a href="/abe/${file.template}?filePath=${file.path}" class="checkmark label-published">&#10004;</a>
-      </td>`
-    }
 
-    // res = `${res}${newRes}`
+      newRes += `<td align="center" class="${flow}">`
+      if(file[flow]) {
+        if (flow === 'publish') {
+          newRes += `<a href="/abe/${file.abe_meta.template}?filePath=${file[flow].html}" class="checkmark label-published">&#10004;</a>`
+        }else {
+          newRes += `<a href="/abe/${file.abe_meta.template}?filePath=${file[flow].html}" class="${hidden} label label-default label-draft">${flow}</a>`
+        }
+      }else {
 
-     return newRes
+      }
+      newRes += '</td>'
+    })
+
+   return newRes
   },
   afterExpress: function(app, express, abe) {
 
@@ -174,7 +156,7 @@ var hooks = {
       var send = res.send;
       res.send = function (string) {
         var body = string instanceof Buffer ? string.toString() : string;
-        body = body.replace(/<\/body>/, function (w) {
+        body = body.replace(/<\/body>/g, function (w) {
            return '<input type=\'hidden\' id=\'globalCsrfToken\' value=\'' + token + '\' /><script src=\'/user-input.js\'></script>' + w;
         });
         send.call(this, body);
@@ -343,6 +325,7 @@ var hooks = {
               null,
               workflow)
               .then(function(resSave) {
+                abe.Manager.instance.updateList()
                 if(typeof resSave.error !== 'undefined' && resSave.error !== null  ){
                   res.set('Content-Type', 'application/json')
                   res.send(JSON.stringify({error: resSave.error}))
