@@ -296,7 +296,7 @@ var hooks = {
           if(typeof res._header !== 'undefined' && res._header !== null) return;
 
           var p = new Promise(function(resolve, reject) {
-            abe.save(
+            abe.cmsOperations.save.save(
               abe.fileUtils.getFilePath(req.body.filePath),
               req.body.tplPath,
               req.body.json,
@@ -316,7 +316,7 @@ var hooks = {
 
           p.then(function(resSave) {
 
-            abe.save(
+            abe.cmsOperations.save.save(
               abe.fileUtils.getFilePath(req.body.filePath),
               req.body.tplPath,
               req.body.json,
