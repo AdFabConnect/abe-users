@@ -93,7 +93,7 @@ var hooks = {
   beforeReject: function(url, abe) {
     var workflow = config.getConfig('workflow', abe)
     workflow.forEach(function (flow) {
-      abe.fileUtils.deleteOlderRevisionByType(abe.fileAttr.delete(url), flow[0])
+      abe.fileUtils.deleteOlderRevisionByType(abe.cmsData.fileAttr.delete(url), flow[0])
     })
 
     return url;
