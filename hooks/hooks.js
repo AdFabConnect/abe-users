@@ -299,7 +299,7 @@ var hooks = {
 
           var p = new Promise(function(resolve, reject) {
             abe.cmsOperations.save.save(
-              path.join(config.root, config.draft.url, req.body.filePath.replace(config.root)),,
+              path.join(abe.config.root, abe.config.draft.url, req.body.filePath.replace(abe.config.root)),,
               req.body.tplPath,
               req.body.json,
               '',
@@ -319,7 +319,7 @@ var hooks = {
           p.then(function(resSave) {
 
             abe.cmsOperations.save.save(
-              path.join(config.root, config.draft.url, req.body.filePath.replace(config.root)),
+              path.join(abe.config.root, abe.config.draft.url, req.body.filePath.replace(abe.config.root)),
               req.body.tplPath,
               req.body.json,
               '',
