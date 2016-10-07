@@ -35,7 +35,7 @@ var route = function route(req, res, next, abe) {
 
         if(typeof emailConf.templateHtml !== 'undefined' && emailConf.templateHtml !== null) {
           var fileHtml = path.join(abe.config.root, emailConf.templateHtml)
-          if (abe.fileUtils.isFile(fileHtml)) {
+          if (abe.coreUtils.file.exist(fileHtml)) {
             var html = fs.readFileSync(fileHtml, 'utf8')
           }
         }
@@ -63,7 +63,7 @@ var route = function route(req, res, next, abe) {
           }, console.error);
 
           var reset = path.join(__dirname + '/../../partials/forgot.html')
-          var html = abe.fileUtils.getFileContent(reset);
+          var html = abe.coreUtils.file.getContent(reset);
 
           var template = abe.Handlebars.compile(html, {noEscape: true})
 
@@ -99,7 +99,7 @@ var route = function route(req, res, next, abe) {
               }
 
               var reset = path.join(__dirname + '/../../partials/forgot.html')
-              var html = abe.fileUtils.getFileContent(reset);
+              var html = abe.coreUtils.file.getContent(reset);
 
               var template = abe.Handlebars.compile(html, {noEscape: true})
 
@@ -122,7 +122,7 @@ var route = function route(req, res, next, abe) {
     });
   }else {
     var reset = path.join(__dirname + '/../../partials/forgot.html')
-    var html = abe.fileUtils.getFileContent(reset);
+    var html = abe.coreUtils.file.getContent(reset);
 
     var template = abe.Handlebars.compile(html, {noEscape: true})
 

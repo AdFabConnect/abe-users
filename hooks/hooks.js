@@ -128,7 +128,7 @@ var hooks = {
   afterExpress: function(app, express, abe) {
 
     var userBddUrl = path.join(abe.config.root, 'users/bdd.json')
-    if(!abe.fileUtils.isFile(userBddUrl)) {
+    if(!abe.coreUtils.file.exist(userBddUrl)) {
       mkdirp(path.dirname(userBddUrl))
       abe.fse.writeJsonSync(userBddUrl, [], { space: 2, encoding: 'utf-8' })
       var admin = User.add({
