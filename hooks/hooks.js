@@ -2,6 +2,7 @@
 
 var config = require('../modules/config');
 var fs = require('fs');
+var path = require('path');
 var passport = require('passport');
 var cookieParser = require('cookie-parser')
 var Cookies = require('cookies');
