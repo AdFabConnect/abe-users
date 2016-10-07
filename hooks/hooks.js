@@ -126,7 +126,7 @@ var hooks = {
   },
   afterExpress: function(app, express, abe) {
 
-    var userBddUrl = abe.fileUtils.concatPath(abe.config.root, 'users/bdd.json')
+    var userBddUrl = path.join(abe.config.root, 'users/bdd.json')
     if(!abe.fileUtils.isFile(userBddUrl)) {
       abe.fileUtils.writeJson(userBddUrl, [])
       var admin = User.add({
