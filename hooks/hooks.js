@@ -129,7 +129,8 @@ var hooks = {
 
     var userBddUrl = path.join(abe.config.root, 'users/bdd.json')
     if(!abe.fileUtils.isFile(userBddUrl)) {
-      abe.fileUtils.writeJson(userBddUrl, [])
+      mkdirp(path.dirname(userBddUrl))
+      abe.fse.writeJsonSync(userBddUrl, [], { space: 2, encoding: 'utf-8' })
       var admin = User.add({
           "username": "admin",
           "name": "admin",

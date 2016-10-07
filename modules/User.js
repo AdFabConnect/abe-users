@@ -84,8 +84,8 @@ exports.deactivate = function(id, abe) {
       bdd[i].actif = 0
     }
   }
-
-  abe.fileUtils.writeJson(__dirname + '/../../../users/bdd.json', bdd)
+  mkdirp(path.dirname(userBddUrl))
+  abe.fse.writeJsonSync(__dirname + '/../../../users/bdd.json', bdd, { space: 2, encoding: 'utf-8' })
 };
 
 exports.activate = function(id, abe) {
@@ -98,7 +98,7 @@ exports.activate = function(id, abe) {
     }
   }
 
-  abe.fileUtils.writeJson(__dirname + '/../../../users/bdd.json', bdd)
+  abe.fse.writeJsonSync(__dirname + '/../../../users/bdd.json', bdd)
 };
 
 exports.remove = function(id, abe) {
@@ -113,7 +113,7 @@ exports.remove = function(id, abe) {
   }
   bdd = newBdd;
 
-  abe.fileUtils.writeJson(__dirname + '/../../../users/bdd.json', bdd)
+  abe.fse.writeJsonSync(__dirname + '/../../../users/bdd.json', bdd)
 };
 
 exports.decodeUser = function(req, res, abe) {
@@ -273,7 +273,7 @@ exports.update = function(data, abe) {
     }
   }
 
-  abe.fileUtils.writeJson(__dirname + '/../../../users/bdd.json', bdd)
+  abe.fse.writeJsonSync(__dirname + '/../../../users/bdd.json', bdd)
 
   return {
     success:1,
@@ -298,7 +298,7 @@ exports.updatePassword = function(data, password, abe) {
     }
   }
 
-  abe.fileUtils.writeJson(__dirname + '/../../../users/bdd.json', bdd)
+  abe.fse.writeJsonSync(__dirname + '/../../../users/bdd.json', bdd)
   
   return {
     success:1,
@@ -332,7 +332,7 @@ exports.add = function(newUser, abe) {
   var salt = bcrypt.genSaltSync(10);
   newUser.password = bcrypt.hashSync(newUser.password, salt);
   bdd.push(newUser);
-  abe.fileUtils.writeJson(__dirname + '/../../../users/bdd.json', bdd)
+  abe.fse.writeJsonSync(__dirname + '/../../../users/bdd.json', bdd)
   
   return {
     success:1,
