@@ -63,7 +63,7 @@ var route = function route(req, res, next, abe) {
           }, console.error);
 
           var reset = path.join(__dirname + '/../../partials/forgot.html')
-          var html = abe.coreUtils.file.getContent(reset);
+          var html = abe.cmsData.file.get(reset);
 
           var template = abe.Handlebars.compile(html, {noEscape: true})
 
@@ -99,7 +99,7 @@ var route = function route(req, res, next, abe) {
               }
 
               var reset = path.join(__dirname + '/../../partials/forgot.html')
-              var html = abe.coreUtils.file.getContent(reset);
+              var html = abe.cmsData.file.get(reset);
 
               var template = abe.Handlebars.compile(html, {noEscape: true})
 
@@ -122,7 +122,7 @@ var route = function route(req, res, next, abe) {
     });
   }else {
     var reset = path.join(__dirname + '/../../partials/forgot.html')
-    var html = abe.coreUtils.file.getContent(reset);
+    var html = abe.cmsData.file.get(reset);
 
     var template = abe.Handlebars.compile(html, {noEscape: true})
 

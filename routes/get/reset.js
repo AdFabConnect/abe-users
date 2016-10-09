@@ -12,7 +12,7 @@ var route = function route(req, res, next, abe) {
   if(typeof req.query.token !== 'undefined' && req.query.token !== null) {
     User.findByResetPasswordToken(req.query.token, function (err, user) {
       var reset = path.join(__dirname + '/../../partials/reset.html')
-      var html = abe.coreUtils.file.getContent(reset);
+      var html = abe.cmsData.file.get(reset);
 
       var template = abe.Handlebars.compile(html, {noEscape: true})
 
