@@ -14,7 +14,7 @@ var route = function route(req, res, next, abe) {
   var htmlToSend = '';
 
   var login = path.join(__dirname + '/../../partials/users-list.html')
-  var html = abe.cmsData.file.get(login);
+  var html = abe.coreUtils.file.getContent(login);
 
   var template = abe.Handlebars.compile(html, {noEscape: true})
   var roles = []

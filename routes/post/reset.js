@@ -14,7 +14,7 @@ var route = function route(req, res, next, abe) {
     && typeof req.body['repeat-password'] !== 'undefined' && req.body['repeat-password'] !== null) {
     if (req.body.password !== req.body['repeat-password']) {
       var reset = path.join(__dirname + '/../../partials/reset.html')
-      var html = abe.cmsData.file.get(reset);
+      var html = abe.coreUtils.file.getContent(reset);
 
       var template = abe.Handlebars.compile(html, {noEscape: true})
 
@@ -47,7 +47,7 @@ var route = function route(req, res, next, abe) {
       }
       if (msg !== '') {
         var reset = path.join(__dirname + '/../../partials/reset.html')
-        var html = abe.cmsData.file.get(reset);
+        var html = abe.coreUtils.file.getContent(reset);
 
         var template = abe.Handlebars.compile(html, {noEscape: true})
 
@@ -72,7 +72,7 @@ var route = function route(req, res, next, abe) {
         res.redirect(login)
       }else {
         var reset = path.join(__dirname + '/../../partials/reset.html')
-        var html = abe.cmsData.file.get(reset);
+        var html = abe.coreUtils.file.getContent(reset);
 
         var template = abe.Handlebars.compile(html, {noEscape: true})
 
