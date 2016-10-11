@@ -8,7 +8,7 @@ var config = require('../../modules/config')
 var path = require('path');
 
 var route = function route(req, res, next, abe) {
-  abe.Hooks.instance.trigger('beforeRoute', req, res, next);
+  abe.abeExtend.hooks.instance.trigger('beforeRoute', req, res, next);
   if(typeof res._header !== 'undefined' && res._header !== null) return;
 
   var htmlToSend = '';
