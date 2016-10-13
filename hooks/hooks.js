@@ -245,6 +245,23 @@ var hooks = {
     return app
   },
   afterHandlebarsHelpers: function(Handlebars, abe) {
+    
+    Handlebars.registerHelper('getCurrentuserRole', function(obj, ctx) {
+      if(typeof obj.express !== 'undefined' && obj.express !== null) {
+        var cookies = new Cookies(obj.express.req, obj.express.res, {
+          secure: abe.config.cookie.secure
+        });
+        var token = cookies.get('x-access-token');
+        if(typeof token !== 'undefined' && token !== null && token !== '') {
+          var secret = config.getConfig('secret', abe);
+          var decoded = jwt.decode(token, secret);
+          var user = User.findSync(decoded.iss)
+          return user.role.workflow;
+        }
+      }
+      return '';
+    });
+    
     Handlebars.registerHelper('role', function(role, obj, ctx) {
       if(typeof obj.express !== 'undefined' && obj.express !== null) {
         var cookies = new Cookies(obj.express.req, obj.express.res, {
