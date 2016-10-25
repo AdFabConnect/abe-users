@@ -27,12 +27,19 @@ var hooks = {
       return  html
     }else if (file === 'toolbar') {
       var workflows = JSON.parse(JSON.stringify(config.getConfig('workflow', abe)));
-      if (workflows[0] === 'draft') {
-        workflows.shift()
-      }
 
-      function addBtn (type, hidden) {
-        var btn = "\n<button class=\"btn btn-info btn-save " + ((hidden && type !== 'draft') ? 'btn-hidden' : '') + "\" data-action=\"" + type + "\">";
+      function addBtn (type, action, isWorkflow) {
+        if (action == null) {
+          action = type
+        }
+        var btn = "\n<button class=\"btn btn-info btn-save {{#ifCond @root.json.abe_meta.status '"
+          + type + "'}}current{{/ifCond}} btn-hidden\" data-action=\"" + action + "\" "
+        if(isWorkflow) {
+          btn += "data-workflow=\"" + action + "\">";
+        }else {
+          btn += "data-extra-btn=\"" + type + "\">";
+        }
+        
         btn += "\n<span class=\"before\">";
         btn += "\n" + type;
         btn += "\n</span>";
@@ -44,50 +51,19 @@ var hooks = {
         btn += "\n</span>";
         btn += "\n</button>";
 
-        return btn
+        return btn;
       }
 
-      var html = ''
-      html += "\n{{#ifCond @root.json.abe_meta.status 'draft'}}";
-      html += addBtn('draft', true);
-
-      html += "\n{{#role '" + workflows[0] + "' @root}}";
-      html += addBtn(workflows[0], false);
-      html += "\n{{/role}}";
-
-      html += "\n{{else}}";
-      html += "\n<button class=\"btn btn-info btn-save\" data-action=\"reject\">";
-      html += "\n<span class=\"before\">";
-      html += "\n{{#ifCond @root.json.abe_meta.status 'publish'}}";
-      html += "\nedit";
-      html += "\n{{else}}";
-      html += "\nreject";
-      html += "\n{{/ifCond}}";
-      html += "\n</span>";
-      html += "\n<span class=\"loading\">";
-      html += "\n{{text.saving}}";
-      html += "\n</span>";
-      html += "\n<span class=\"after\">";
-      html += "\n{{text.done}}";
-      html += "\n</span>";
-      html += "\n</button>";
-      html += "\n{{/ifCond}}";
-
-      var prev = workflows[0];
-
-      workflows.shift();
-
+      var html = '';
+      html += addBtn("edit", "draft", false);
+      html += addBtn("reject", null, false);
       Array.prototype.forEach.call(workflows, (workflow) => {
-        html += "\n{{#ifCond @root.json.abe_meta.status '" + prev + "'}}";
         html += "\n{{#role '" + workflow + "' @root}}";
-        html += addBtn(workflow, false);
+        html += addBtn(workflow, null, true);
         html += "\n{{/role}}";
-        html += "\n{{/ifCond}}";
-
-        prev = workflow
       })
 
-      return  html
+      return  html;
     }
     return res;
   },

@@ -1,8 +1,13 @@
 var userInput = {
+  isInit: false,
   init: function () {
+    this.isInit = true
     // const
     this._btnHidden = document.querySelector('.form-wrapper .btns [data-action="draft"]');
-    console.log(this._btnHidden)
+    this._btnActions = [].slice.call(document.querySelectorAll('.form-wrapper .btns [data-workflow]'));
+    this._btnReject = document.querySelector('.form-wrapper .btns [data-extra-btn="reject"]');
+    this._btnEdit = document.querySelector('.form-wrapper .btns [data-extra-btn="edit"]');
+
     this._inputs = [].slice.call(document.querySelectorAll('input.form-abe'));
     this._inputs = this._inputs.concat([].slice.call(document.querySelectorAll('textarea.form-abe')));
     this._inputsFile = [].slice.call(document.querySelectorAll('.upload-wrapper input[type="file"]'))
@@ -12,10 +17,86 @@ var userInput = {
 
     // bind this
     this._handleInputChange = this._inputChange.bind(this);
+    this._handleOnSaved = this._onSaved.bind(this);
+    // this._handleWillSave = this._willSaved.bind(this);
 
     this._bindEvent();
+    this._showHideBtn();
+  },
+  _showHideBtn() {
+    this._changeCurrentBtn(document.querySelector('.form-wrapper .btns [data-action="' + json.abe_meta.status + '"]'));
+
+    var isCurrent = false
+    Array.prototype.forEach.call(this._btnActions, function(btn) {
+      
+      if (btn.classList.contains('current')) {
+        btn.classList.add('btn-hidden')
+        // btn.classList.remove('btn-hidden')
+        isCurrent = true
+      }else {
+        if (isCurrent) {
+          btn.classList.remove('btn-hidden')
+          isCurrent = false
+        }else {
+          btn.classList.add('btn-hidden')
+        }
+      }
+    }.bind(this))
+
+    if (json.abe_meta.status !== "draft" && json.abe_meta.status !== "publish") {
+      this._btnReject.classList.remove('btn-hidden')
+    }else {
+      this._btnReject.classList.add('btn-hidden')
+    }
+    if (json.abe_meta.status === "publish") {
+      this._btnEdit.classList.remove('btn-hidden')
+    }else {
+      this._btnEdit.classList.add('btn-hidden')
+    }
+    if (json.abe_meta.status === "draft") {
+      this._enableInput()
+      this._btnActions[0].classList.remove('btn-hidden')
+      this._btnActions[1].classList.remove('btn-hidden')
+    }else {
+      this._disableInput()
+    }
+  },
+  _changeCurrentBtn(currentBtn) {
+    var isCurrent = false
+    Array.prototype.forEach.call(this._btnActions, function(btn) {
+      btn.classList.remove('current')
+    }.bind(this))
+    currentBtn.classList.add('current')
+  },
+  _disableInput() {
+    Array.prototype.forEach.call(this._inputsFile, function(input) {
+      input.setAttribute('disabled', '')
+    }.bind(this));
+    Array.prototype.forEach.call(this._inputs, function(input) {
+      input.setAttribute('disabled', '')
+    }.bind(this));
+    Array.prototype.forEach.call(this._selects, function(input) {
+      input.setAttribute('disabled', '')
+    }.bind(this));
+  },
+  _enableInput() {
+    Array.prototype.forEach.call(this._inputsFile, function(input) {
+      input.removeAttribute('disabled')
+    }.bind(this));
+    Array.prototype.forEach.call(this._inputs, function(input) {
+      input.removeAttribute('disabled')
+    }.bind(this));
+    Array.prototype.forEach.call(this._selects, function(input) {
+      input.removeAttribute('disabled')
+    }.bind(this));
   },
   _bindEvent: function (e) {
+    window.abe.save.onFileSaved(this._handleOnSaved)
+
+    Array.prototype.forEach.call(this._btnActions, function(btn) {
+      btn.addEventListener('click', this._handleWillSave)
+    }.bind(this));
+
     Array.prototype.forEach.call(this._inputsFile, function(input) {
       if(!this._checkInputChanged){
         input.setAttribute('disabled', '')
@@ -51,6 +132,9 @@ var userInput = {
       };
     })(XMLHttpRequest.prototype.send);
   },
+  _onSaved: function (e) {
+    this._showHideBtn();
+  },
   _inputChange: function (e) {
     if(!this._checkInputChanged || this._inputHasChanged) return
     this._inputHasChanged = true
@@ -61,4 +145,14 @@ var userInput = {
   }
 }
 
-userInput.init();
+document.addEventListener('abeReady', function() {
+  if (!userInput.isInit) {
+    userInput.init();
+  }
+})
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.abe != null && !userInput.isInit) {
+    userInput.init();
+  }
+})
