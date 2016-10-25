@@ -23,6 +23,24 @@ var userInput = {
     this._bindEvent();
     this._showHideBtn();
   },
+  _csrfToken() {
+    var csrfToken = document.querySelector('#globalCsrfToken').value;
+    var forms = [].slice.call(document.querySelectorAll('form'));
+    Array.prototype.forEach.call(forms, function(form) {
+      var csrInput = document.createElement('input');
+      csrInput.type = 'hidden';
+      csrInput.name = '_csrf';
+      csrInput.value = csrfToken;
+      form.appendChild(csrInput);
+    });
+
+    (function(send) {
+      XMLHttpRequest.prototype.send = function(data) {
+        this.setRequestHeader('X-CSRF-Token', csrfToken);
+        send.call(this, data);
+      };
+    })(XMLHttpRequest.prototype.send);
+  },
   _showHideBtn() {
     this._changeCurrentBtn(document.querySelector('.form-wrapper .btns [data-action="' + json.abe_meta.status + '"]'));
 
@@ -114,23 +132,6 @@ var userInput = {
       }
       input.addEventListener('change', this._handleInputChange)
     }.bind(this));
-
-    var csrfToken = document.querySelector('#globalCsrfToken').value;
-    var forms = [].slice.call(document.querySelectorAll('form'));
-    Array.prototype.forEach.call(forms, function(form) {
-      var csrInput = document.createElement('input');
-      csrInput.type = 'hidden';
-      csrInput.name = '_csrf';
-      csrInput.value = csrfToken;
-      form.appendChild(csrInput);
-    });
-
-    (function(send) {
-      XMLHttpRequest.prototype.send = function(data) {
-        this.setRequestHeader('X-CSRF-Token', csrfToken);
-        send.call(this, data);
-      };
-    })(XMLHttpRequest.prototype.send);
   },
   _onSaved: function (e) {
     this._showHideBtn();
@@ -156,3 +157,5 @@ document.addEventListener('DOMContentLoaded', function() {
     userInput.init();
   }
 })
+
+userInput._csrfToken();
