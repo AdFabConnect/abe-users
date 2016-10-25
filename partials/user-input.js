@@ -3,25 +3,27 @@ var userInput = {
   init: function () {
     this.isInit = true
     // const
-    this._btnHidden = document.querySelector('.form-wrapper .btns [data-action="draft"]');
     this._btnActions = [].slice.call(document.querySelectorAll('.form-wrapper .btns [data-workflow]'));
-    this._btnReject = document.querySelector('.form-wrapper .btns [data-extra-btn="reject"]');
-    this._btnEdit = document.querySelector('.form-wrapper .btns [data-extra-btn="edit"]');
+    if (this._btnActions.length > 0) {
+      this._btnHidden = document.querySelector('.form-wrapper .btns [data-action="draft"]');
+      this._btnReject = document.querySelector('.form-wrapper .btns [data-extra-btn="reject"]');
+      this._btnEdit = document.querySelector('.form-wrapper .btns [data-extra-btn="edit"]');
 
-    this._inputs = [].slice.call(document.querySelectorAll('input.form-abe'));
-    this._inputs = this._inputs.concat([].slice.call(document.querySelectorAll('textarea.form-abe')));
-    this._inputsFile = [].slice.call(document.querySelectorAll('.upload-wrapper input[type="file"]'))
-    this._selects = [].slice.call(document.querySelectorAll('#abeForm select'))
-    this._inputHasChanged = false;
-    this._checkInputChanged = (typeof this._btnHidden !== 'undefined' && this._btnHidden !== null) ? true : false
+      this._inputs = [].slice.call(document.querySelectorAll('input.form-abe'));
+      this._inputs = this._inputs.concat([].slice.call(document.querySelectorAll('textarea.form-abe')));
+      this._inputsFile = [].slice.call(document.querySelectorAll('.upload-wrapper input[type="file"]'))
+      this._selects = [].slice.call(document.querySelectorAll('#abeForm select'))
+      this._inputHasChanged = false;
+      this._checkInputChanged = (typeof this._btnHidden !== 'undefined' && this._btnHidden !== null) ? true : false
 
-    // bind this
-    this._handleInputChange = this._inputChange.bind(this);
-    this._handleOnSaved = this._onSaved.bind(this);
-    // this._handleWillSave = this._willSaved.bind(this);
+      // bind this
+      this._handleInputChange = this._inputChange.bind(this);
+      this._handleOnSaved = this._onSaved.bind(this);
+      // this._handleWillSave = this._willSaved.bind(this);
 
-    this._bindEvent();
-    this._showHideBtn();
+      this._bindEvent();
+      this._showHideBtn();
+    }
   },
   _csrfToken() {
     var csrfToken = document.querySelector('#globalCsrfToken').value;
