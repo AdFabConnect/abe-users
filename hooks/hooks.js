@@ -125,7 +125,7 @@ var hooks = {
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(passport.session());
-    app.use(mkdirp({
+    app.use(csrf({
       cookie: {
         secure: abe.config.cookie.secure
       }
