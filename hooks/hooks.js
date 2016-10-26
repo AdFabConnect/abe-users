@@ -286,7 +286,7 @@ var hooks = {
 
       if (workflow !== 'draft' && workflow !== 'publish' && workflow !== 'reject') {
 
-        router.post('/' + workflow, function(req, res, next){
+        router.post('/abe/' + workflow, function(req, res, next){
 
           abe.abeExtend.hooks.instance.trigger('beforeRoute', req, res, next)
           if(typeof res._header !== 'undefined' && res._header !== null) return;
