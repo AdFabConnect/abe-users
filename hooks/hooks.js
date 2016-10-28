@@ -285,62 +285,53 @@ var hooks = {
     Array.prototype.forEach.call(workflows, function(workflow) {
 
       if (workflow !== 'draft' && workflow !== 'publish' && workflow !== 'reject') {
-
-        router.post('/abe/' + workflow, function(req, res, next){
+        router.post('/abe/' + workflow + '*', function(req, res, next){
 
           abe.abeExtend.hooks.instance.trigger('beforeRoute', req, res, next)
           if(typeof res._header !== 'undefined' && res._header !== null) return;
 
-          var p = new Promise(function(resolve, reject) {
-            abe.cmsOperations.save.save(
-              path.join(abe.config.root, abe.config.draft.url, req.body.filePath.replace(abe.config.root)),
-              req.body.tplPath,
-              req.body.json,
-              '',
-              'draft',
-              null,
-              workflow)
-              .then(function() {
-                resolve()
-              }.bind(this)).catch(function(e) {
-                console.error(e.stack)
-              })
-          }.bind(this))
-          .catch(function(e) {
-            console.error(e.stack) // "oh, no!"
-          })
+          var filePath = req.originalUrl.replace('/abe/', '')
+          filePath = filePath.split('/')
+          // var workflow = 
+          filePath.shift()
+          filePath = '/' + filePath.join('/')
+          var json = req.body.json
 
-          p.then(function(resSave) {
-
-            abe.cmsOperations.save.save(
-              path.join(abe.config.root, abe.config.draft.url, req.body.filePath.replace(abe.config.root)),
-              req.body.tplPath,
-              req.body.json,
-              '',
+            var p = abe.cmsOperations.post.draft(
+              filePath, 
+              json.abe_meta.template,
+              json,
               workflow,
-              null,
-              workflow)
-              .then(function(resSave) {
-                abe.Manager.instance.updateList()
-                if(typeof resSave.error !== 'undefined' && resSave.error !== null  ){
-                  res.set('Content-Type', 'application/json')
-                  res.send(JSON.stringify({error: resSave.error}))
-                }
-                var result
-                if(typeof resSave.reject !== 'undefined' && resSave.reject !== null){
-                  result = resSave
-                }
-                if(typeof resSave.json !== 'undefined' && resSave.json !== null){
-                  result = {
-                    success: 1,
-                    json: resSave.json
-                  }
-                }
+              'draft'
+            )
+
+            p.then((result) => {
+              var p2 = abe.cmsOperations.post.draft(
+                filePath, 
+                json.abe_meta.template,
+                json,
+                workflow,
+                workflow
+              )
+
+              p2.then((result) => {
                 res.set('Content-Type', 'application/json')
                 res.send(JSON.stringify(result))
-              }.bind(this))
-            }.bind(this))
-          })
+              },
+              (result) => {
+                res.set('Content-Type', 'application/json')
+                res.send(JSON.stringify(result))
+              }).catch(function(e) {
+                console.error('[ERROR] post-publish.js', e)
+              })
+            },
+            (result) => {
+              res.set('Content-Type', 'application/json')
+              res.send(JSON.stringify(result))
+            }).catch(function(e) {
+              console.error('[ERROR] post-publish.js', e)
+            })
+          }.bind(this))
       }
       
     }.bind(this))
