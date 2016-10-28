@@ -139,12 +139,14 @@ var userInput = {
     this._showHideBtn();
   },
   _inputChange: function (e) {
-    if(!this._checkInputChanged || this._inputHasChanged) return
-    this._inputHasChanged = true
-    Array.prototype.forEach.call(document.querySelectorAll('.btn-save'), function(btn) {
-      if(!btn.classList.contains('btn-hidden')) btn.classList.add('btn-hidden')
-    }.bind(this))
-    this._btnHidden.classList.remove('btn-hidden')
+    if (json.abe_meta.status !== 'draft') {
+      if(!this._checkInputChanged || this._inputHasChanged) return
+      this._inputHasChanged = true
+      Array.prototype.forEach.call(document.querySelectorAll('.btn-save'), function(btn) {
+        if(!btn.classList.contains('btn-hidden')) btn.classList.add('btn-hidden')
+      }.bind(this))
+      this._btnHidden.classList.remove('btn-hidden')
+    }
   }
 }
 
