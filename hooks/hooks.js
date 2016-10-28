@@ -13,6 +13,7 @@ var helmet = require('helmet');
 var Limiter = require('ratelimiter');
 var redis = require('redis');
 var csrf = require('csurf');
+var mkdirp = require('mkdirp');
 
 var hooks = {
   afterImport: function(res, file, conf, ctx, abe) {
