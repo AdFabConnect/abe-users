@@ -90,9 +90,9 @@ var hooks = {
       newRes += `<td align="center" class="${flow}">`
       if(file[flow]) {
         if (flow === 'publish') {
-          newRes += `<a href="/abe/${file.abe_meta.template}?filePath=${file[flow].html}" class="checkmark label-published" title="${file[flow].cleanDate}">&#10004;</a>`
+          newRes += `<a href="/abe/${file[flow].html}" class="checkmark label-published" title="${file[flow].cleanDate}">&#10004;</a>`
         }else {
-          newRes += `<a href="/abe/${file.abe_meta.template}?filePath=${file[flow].html}" class="${hidden} label label-default label-draft" title="${file[flow].cleanDate}">${flow}</a>`
+          newRes += `<a href="/abe/${file[flow].html}" class="${hidden} label label-default label-draft" title="${file[flow].cleanDate}">${flow}</a>`
         }
       }else {
 
