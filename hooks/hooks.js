@@ -283,7 +283,6 @@ var hooks = {
   beforeAddRoute: function(router, abe) {
     var workflows = config.getConfig('workflow', abe)
     Array.prototype.forEach.call(workflows, function(workflow) {
-
       if (workflow !== 'draft' && workflow !== 'publish' && workflow !== 'reject') {
         router.post('/abe/' + workflow + '*', function(req, res, next){
 
@@ -297,40 +296,22 @@ var hooks = {
           filePath = '/' + filePath.join('/')
           var json = req.body.json
 
-            var p = abe.cmsOperations.post.draft(
-              filePath, 
-              json.abe_meta.template,
-              json,
-              workflow,
-              'draft'
-            )
+          var p = abe.cmsOperations.post.draft(
+            filePath, 
+            json,
+            workflow
+          )
 
-            p.then((result) => {
-              var p2 = abe.cmsOperations.post.draft(
-                filePath, 
-                json.abe_meta.template,
-                json,
-                workflow,
-                workflow
-              )
-
-              p2.then((result) => {
-                res.set('Content-Type', 'application/json')
-                res.send(JSON.stringify(result))
-              },
-              (result) => {
-                res.set('Content-Type', 'application/json')
-                res.send(JSON.stringify(result))
-              }).catch(function(e) {
-                console.error('[ERROR] post-publish.js', e)
-              })
-            },
-            (result) => {
-              res.set('Content-Type', 'application/json')
-              res.send(JSON.stringify(result))
-            }).catch(function(e) {
-              console.error('[ERROR] post-publish.js', e)
-            })
+          p.then((result) => {
+            res.set('Content-Type', 'application/json')
+            res.send(JSON.stringify(result))
+          },
+          (result) => {
+            res.set('Content-Type', 'application/json')
+            res.send(JSON.stringify(result))
+          }).catch(function(e) {
+            console.error('[ERROR] post-publish.js', e)
+          })
           }.bind(this))
       }
       
