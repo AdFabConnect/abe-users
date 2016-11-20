@@ -1,12 +1,12 @@
 {
   "name": "abe-users",
-  "version": "0.2.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "> plugin Abe for users and role management",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Nicolas Labbé",
   "license": "ISC",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -30,5 +30,20 @@
     "redis": "^2.6.0-1",
     "smtp-server": "^1.11.1",
     "xss": "^0.2.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdFabConnect/abe-users.git"
+  },
+  "keywords": [
+    "abe",
+    "cms",
+    "plugin",
+    "user",
+    "management"
+  ],
+  "bugs": {
+    "url": "https://github.com/AdFabConnect/abe-users/issues"
+  },
+  "homepage": "https://github.com/AdFabConnect/abe-users#readme"
 }
