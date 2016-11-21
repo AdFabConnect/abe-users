@@ -1,6 +1,6 @@
 {
   "name": "abe-users",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "> plugin Abe for users and role management",
   "main": "index.js",
   "scripts": {
