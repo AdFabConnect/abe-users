@@ -47,9 +47,9 @@ var config = {
     ]
   },
   getConfig(str, abe) {
-  	if(typeof abe.config.plugins.users !== 'undefined' && abe.config.plugins.users !== null) {
-  		if(typeof abe.config.plugins.users[str] !== 'undefined' && abe.config.plugins.users[str] !== null) {
-  				return abe.config.plugins.users[str]
+  	if(typeof abe.config.pluginsConfig.users !== 'undefined' && abe.config.pluginsConfig.users !== null) {
+  		if(typeof abe.config.pluginsConfig.users[str] !== 'undefined' && abe.config.pluginsConfig.users[str] !== null) {
+  				return abe.config.pluginsConfig.users[str]
   			}	
   	}
 

@@ -30,7 +30,7 @@ into your website abe.json file, add on the plugins/users json, roles, secret, m
 {
 ...
 
-  "plugins": {
+  "pluginsConfig": {
     "users": {
     	// add following config here
     }
