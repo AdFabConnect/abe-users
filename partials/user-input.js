@@ -40,7 +40,7 @@ var userInput = {
     (function(open) {
       XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
         // extracting domain of the query
-        var domain = (url.indexOf("://") > -1)? url.split('/')[2]: url.split('/')[0]
+        var domain = (url.indexOf("://") > -1)? url.split('/')[2]: window.location.hostname
         this._domain = domain.split(':')[0];
         open.call(this, method, url, async, user, password);
       };
