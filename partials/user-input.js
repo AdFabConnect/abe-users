@@ -37,9 +37,20 @@ var userInput = {
       form.appendChild(csrInput);
     });
 
+    (function(open) {
+      XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
+        // extracting domain of the query
+        var domain = (url.indexOf("://") > -1)? url.split('/')[2]: url.split('/')[0]
+        this._domain = domain.split(':')[0];
+        open.call(this, method, url, async, user, password);
+      };
+    })(XMLHttpRequest.prototype.open);
+
     (function(send) {
       XMLHttpRequest.prototype.send = function(data) {
-        this.setRequestHeader('X-CSRF-Token', csrfToken);
+        // if query domain == abe domain => CSRF token
+        if (window.location.hostname == this._domain)
+          this.setRequestHeader('X-CSRF-Token', csrfToken);
         send.call(this, data);
       };
     })(XMLHttpRequest.prototype.send);
