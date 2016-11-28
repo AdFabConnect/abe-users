@@ -1,3 +1,5 @@
+# [ DEPRECATED SINCE ABE 2.9.0 ]
+
 # Users
 
 > plugin Abe for users and role management
